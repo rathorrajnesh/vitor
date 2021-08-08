@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-avatar slot="start" class="UserIcon">
+      <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="avatar">
+    </ion-avatar>
+    <ion-title>{{ todayDate | date : 'dd MMM, y'}}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+<ion-item no-lines>
+  <ion-label>Breaking News</ion-label>
+</ion-item>
+
+<ion-card (click)="gotoDetails(mainScreenNews)">
+  <img [src]="mainScreenNews?.image" onError="this.src='https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'" alt="news image"/>
+  <ion-card-header>
+    <ion-card-title [innerHTML]="mainScreenNews?.title | safe"></ion-card-title>
+    <ion-card-subtitle>
+      <!-- Contest loss with major dhyamchand -->
+      <ion-item>
+        <ion-avatar slot="start">
+          <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="">
+        </ion-avatar>
+        <ion-label>{{ mainScreenNews?.author || 'Author not found'}}</ion-label>
+        <ion-text color="primary" slot="end">
+          {{ mainScreenNews?.published_at | date : 'dd MMM, y' }}
+        </ion-text>
+    </ion-item>
+  </ion-card-subtitle>
+  </ion-card-header>
+</ion-card>
+<!-- <ion-segment [(ngModel)]="selectedCategory" (ionChange)="segmentChanged($event)">
+  <ion-segment-button *ngFor="let category of totalCategories" [value]="category">
+    <ion-label>{{ category }}</ion-label>
+  </ion-segment-button>
+</ion-segment> -->
+
+<ion-slides scrollbar="ios" [options]="slidesOpts">
+  <ion-slide *ngFor="let category of totalCategories"  (click)="segmentChanged(category)">
+    {{category}}
+  </ion-slide>
+</ion-slides>
+
+<ion-list>
+  <ion-item *ngFor="let item of selectedCategoryNews;trackBy:trackByid">
+    <ion-thumbnail slot="start" (click)="gotoDetails(item)">
+      <img [src]="item.image" onError="this.src='https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'" alt="news image"/>
+    </ion-thumbnail>
+    <ion-label (click)="gotoDetails(item)">{{ item.title}}</ion-label>
+
+    <ion-icon slot="end" name="bookmark" (click)="AddorRemoveBookmark(item.url)" *ngIf="!checkIsBookMarked(item.url);else bookedtempla"></ion-icon>
+    <ng-template #bookedtempla>
+      <ion-icon slot="end" name="bookmarks" (click)="AddorRemoveBookmark(item.url)"></ion-icon>
+    </ng-template>
+  </ion-item>
+</ion-list>
+
+
+<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Loading more data...">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+</ion-content>

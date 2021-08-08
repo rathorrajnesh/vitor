@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end" (click)="shareModule()">
+      <ion-button>
+        share
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-card>
+  <img [src]="news.image" onError="this.src='https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'" alt="news image"/>
+  <ion-card-header>
+    <ion-card-title>{{ news.title}}</ion-card-title>
+    <!-- Contest loss with major dhyamchand -->
+    <ion-item>
+      <ion-avatar slot="start">
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="">
+      </ion-avatar>
+      <ion-label>{{ news.author || 'Author not found'}}</ion-label>
+      <ion-text color="primary" slot="end">
+        {{ news.published_at | date : 'dd MMM, y' }}
+      </ion-text>
+    </ion-item>
+
+    <ion-card-subtitle  [innerHTML]="news.title | safe"></ion-card-subtitle>
+  </ion-card-header>
+</ion-card>
+
+</ion-content>
